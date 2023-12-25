@@ -3,18 +3,17 @@ package views
 import (
     "github.com/k23dev/tango/app/views/layouts"
     "github.com/k23dev/tango/app/models"
+	"github.com/k23dev/tango/app/views/components"
 )
-
-var catIDStr string
 
 templ CategoriesShowList(appTitle string,categories []models.Category){
     @layouts.Default(appTitle){
-        <h1>Lista de categorías</h1>
-        <ol>
-            for _,cat:=range(categories){
-                <li><a href={templ.URL("#cat-"+cat.GetIDAsString(cat.ID))} hx-get={ "/categories/"+cat.GetIDAsString(cat.ID)} hx-trigger="click">{cat.Name}</a></li>
-            }
-        </ol>
+        // <ol>
+        //     for _,cat:=range(categories){
+        //         <li><a href={templ.URL("#cat-"+cat.GetIDAsString(cat.ID))} hx-get={ "/categories/"+cat.GetIDAsString(cat.ID)} hx-trigger="click">{cat.Name}</a></li>
+        //     }
+        // </ol>
+        @components.Table(categories)
     }
 
 }
@@ -25,21 +24,13 @@ templ CategoriesShowOne(appTitle string,cat models.Category){
 
 templ CategoriesFormCreate(appTitle string){
     @layouts.Default(appTitle){
-        <h1>Nueva categoría</h1>
-
-        <form action="/categories" method="post">
-            <input name="name" value=""/>
-            <input type="submit" value="Enviar"></input>
-        </form>
+        @components.CardCategoryForm("/categories/create","")
     }
 }
 
 templ CategoriesFormUpdate(appTitle string,cat *models.Category){
     @layouts.Default(appTitle){
-        <form action="/categories" method="put">
-            <input name="name" value={cat.Name}/>
-            <input type="submit" value="Enviar"></input>
-        </form>
+        @components.CardCategoryForm("/categories/update/"+cat.GetIDAsString(),cat.Name)
     }
 }
 

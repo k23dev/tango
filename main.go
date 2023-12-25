@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/k23dev/go4it"
-	"github.com/k23dev/tango/app/routes"
+	"github.com/k23dev/tango/app"
 	"github.com/k23dev/tango/pkg/webcore"
 	"github.com/k23dev/tango/pkg/webcore_features"
 	"github.com/labstack/echo/v4"
@@ -28,13 +28,13 @@ func main() {
 
 	//  Routes
 
-	webcore_features.SetupRoutes(&tapp)
-
 	if tapp.App.Config.App_setup_enabled && tapp.App.Config.App_debug_mode {
-		routes.SetupApiRoutes(&tapp)
+		webcore_features.SetupRoutes(&tapp)
 	}
 
 	webcore.SetupStaticRoutes(tapp.Server)
+
+	app.AppSetup(&tapp)
 
 	// open app in default browser
 	go4it.OpenInBrowser("http://" + tapp.GetAppUrl())

@@ -14,8 +14,10 @@ templ Default(appTitle string){
     </head>
     <body>
         @components.Nav(appTitle)
-        <div class="mx-10">
+        // @components.Sidebar(appTitle)
+        <div class="container mx-10">
             { children... }
+            // @components.Footer(appTitle,"K23")
         </div>
     </body>
     </html>

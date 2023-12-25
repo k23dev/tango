@@ -4,9 +4,12 @@ HTMLX_DIR=./public/assets/js
 VIEWS_DIR=./app/views/
 
 tango-install:
+	mkdir _db
 	make go-install-deps
 	make tailwind-install
 	make htmlx-install
+	make templates
+	go mod tidy
 
 go-install-deps:
 	go install github.com/cosmtrek/air@latest
@@ -38,6 +41,7 @@ templates:
 templates-clean:
 	rm -f ${VIEWS_DIR}components/*.go
 	rm -f ${VIEWS_DIR}layouts/*.go
+	rm -f ${VIEWS_DIR}menus/*.go
 	rm -f ${VIEWS_DIR}*.go
 
 dev:
