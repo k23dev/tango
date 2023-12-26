@@ -16,8 +16,18 @@ type CategoryDTO struct {
 	Name string `json:"name" param:"name" query:"name" form:"name"`
 }
 
+type CategoryCounter struct {
+	Total int
+}
+
 func NewCategory() *Category {
 	return &Category{}
+}
+
+func (c *Category) Count(db *gorm.DB) (int, error) {
+	counter := &CategoryCounter{}
+	db.Model(&Category{}).Select("count(ID) as total").Where("delete = ? ", "").Find(&counter)
+	return counter.Total, nil
 }
 
 func (c *Category) FindOne(db *gorm.DB, id int) (*Category, error) {
@@ -46,6 +56,20 @@ func (c *Category) FindAll(db *gorm.DB) ([]Category, error) {
 		}
 	}
 	return categories, nil
+}
+
+func (c *Category) FindAllPagination(db *gorm.DB, itemsPerPage, currentPage int) (*[]Category, error) {
+	categories := []Category{}
+
+	db.Order("created_at ASC").Limit(itemsPerPage).Offset(itemsPerPage * currentPage).Find(&categories)
+	if len(categories) <= 0 {
+		return nil, &tango_errors.ModelError{
+			ModelName: "Category",
+			Code:      0,
+			Message:   tango_errors.MsgZeroRecordsFound(),
+		}
+	}
+	return &categories, nil
 }
 
 func (c *Category) Create(db *gorm.DB, name string) (*Category, error) {

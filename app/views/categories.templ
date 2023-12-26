@@ -5,22 +5,21 @@ import (
     "github.com/k23dev/tango/app/models"
 	"github.com/k23dev/tango/app/views/components"
 	"github.com/k23dev/tango/app/views/forms"
+    "github.com/k23dev/tango/pkg/pagination"
 )
 
-templ CategoriesShowList(appTitle string,categories []models.Category){
+templ CategoriesShowList(appTitle string,categories []models.Category,pagination pagination.Pagination){
     @layouts.Default(appTitle){
-        // <ol>
-        //     for _,cat:=range(categories){
-        //         <li><a href={templ.URL("#cat-"+cat.GetIDAsString(cat.ID))} hx-get={ "/categories/"+cat.GetIDAsString(cat.ID)} hx-trigger="click">{cat.Name}</a></li>
-        //     }
-        // </ol>
-        @components.Table(categories)
+        @components.Table(categories,pagination)
     }
 
 }
 
 templ CategoriesShowOne(appTitle string,cat models.Category){
-    <h1>Categoría > {cat.Name}</h1>
+    @layouts.Default(appTitle){
+        <h1>Categoría</h1>
+        <h2>{cat.Name}</h2>
+    }
 }
 
 templ CategoriesFormCreate(appTitle string){

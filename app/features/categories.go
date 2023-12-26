@@ -7,27 +7,39 @@ import (
 
 	"github.com/k23dev/tango/app/models"
 	"github.com/k23dev/tango/app/views"
+	"github.com/k23dev/tango/pkg/pagination"
 	"github.com/k23dev/tango/pkg/webcore"
 	"github.com/k23dev/tango/pkg/webcore/utils"
 	"github.com/labstack/echo/v4"
 )
+
+var itemsPerPage = 15
 
 func FindOneCategory(c echo.Context, tapp *webcore.TangoApp) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 
 	cat := models.NewCategory()
 	category, _ := cat.FindOne(tapp.App.DB.Primary, id)
-	if category.ID != 0 {
+	if category != nil {
 		return utils.Render(c, views.CategoriesShowOne(tapp.GetTitleAndVersion(), *category))
 	} else {
-		return c.Redirect(http.StatusMovedPermanently, "404")
+		return c.Redirect(http.StatusMovedPermanently, "/404")
 	}
 }
 
 func FindAllCategories(c echo.Context, tapp *webcore.TangoApp) error {
+	queryPage := c.Param("page")
+	var currentPage = 0
+	if queryPage != "" {
+		currentPage, _ = strconv.Atoi(queryPage)
+	}
+
 	cat := models.NewCategory()
-	categories, _ := cat.FindAll(tapp.App.DB.Primary)
-	return utils.Render(c, views.CategoriesShowList(tapp.GetTitleAndVersion(), categories))
+	counter, _ := cat.Count(tapp.App.DB.Primary)
+	pagination := pagination.NewPagination(currentPage, itemsPerPage, counter)
+	categories, _ := cat.FindAllPagination(tapp.App.DB.Primary, itemsPerPage, currentPage)
+	// categories, _ := cat.FindAll(tapp.App.DB.Primary)
+	return utils.Render(c, views.CategoriesShowList(tapp.GetTitleAndVersion(), *categories, *pagination))
 }
 
 func ShowFormCategory(c echo.Context, tapp *webcore.TangoApp, is_new bool) error {
