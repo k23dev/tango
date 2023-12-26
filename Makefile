@@ -1,5 +1,7 @@
 BINARY_NAME=app
+BINARY_NAME_WIN=app.exe
 BUILD_DIR=./build
+BUILD_DIR_WIN=./build/windows
 HTMLX_DIR=./public/assets/js
 VIEWS_DIR=./app/views/
 
@@ -31,9 +33,28 @@ build:
 	make templates
 
 	# compile into binary file
-	GOOS=linux GOARCH=amd64 go build -o ${BINARY_NAME} -ldflags "-w -s"
+	GOOS=linux GOARCH=amd64 go build -o ${BINARY_NAME} -gccgoflags "-w -s"
 	chmod +x ${BINARY_NAME}
 	mv ${BINARY_NAME} ${BUILD_DIR}
+
+build-win:
+	# create directories
+	mkdir -p ${BUILD_DIR_WIN}
+	mkdir ${BUILD_DIR_WIN}/_db
+	mkdir ${BUILD_DIR_WIN}/logs
+	mkdir ${BUILD_DIR_WIN}/public
+
+	# copy the config files and seeds
+	cp -r ./config ./build/config
+	cp -r ./seeds ./build/seeds
+	
+	# templates generator
+	make templates
+
+	# compile into binary file
+	GOOS=windows GOARCH=amd64 go build -o ${BINARY_NAME_WIN} -gccgoflags "-w -s"
+	chmod +x ${BINARY_NAME_WIN}
+	mv ${BINARY_NAME_WIN} ${BUILD_DIR_WIN}
 
 templates:
 	templ generate
