@@ -4,6 +4,7 @@ import (
     "github.com/k23dev/tango/app/views/layouts"
     "github.com/k23dev/tango/app/models"
 	"github.com/k23dev/tango/app/views/components"
+	"github.com/k23dev/tango/app/views/forms"
 )
 
 templ CategoriesShowList(appTitle string,categories []models.Category){
@@ -24,13 +25,13 @@ templ CategoriesShowOne(appTitle string,cat models.Category){
 
 templ CategoriesFormCreate(appTitle string){
     @layouts.Default(appTitle){
-        @components.CardCategoryForm("/categories/create","")
+        @forms.Category("/categories/create","")
     }
 }
 
 templ CategoriesFormUpdate(appTitle string,cat *models.Category){
     @layouts.Default(appTitle){
-        @components.CardCategoryForm("/categories/update/"+cat.GetIDAsString(),cat.Name)
+        @forms.Category("/categories/update/"+cat.GetIDAsString(),cat.Name)
     }
 }
 

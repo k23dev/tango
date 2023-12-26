@@ -41,6 +41,7 @@ templates:
 templates-clean:
 	rm -f ${VIEWS_DIR}components/*.go
 	rm -f ${VIEWS_DIR}layouts/*.go
+	rm -f ${VIEWS_DIR}forms/*.go
 	rm -f ${VIEWS_DIR}menus/*.go
 	rm -f ${VIEWS_DIR}*.go
 
@@ -66,10 +67,11 @@ clean:
 	rm -rf ${BUILD_DIR}
 
 htmlx-install:
+	rm -f ${HTMLX_DIR}/htmx.min.js
 	wget https://unpkg.com/htmx.org/dist/htmx.min.js -P ${HTMLX_DIR}
 
 htmlx-update:
-	rm -rf ${HTMLX_DIR}/*
+	rm -f ${HTMLX_DIR}/htmx.min.js
 	wget https://unpkg.com/htmx.org/dist/htmx.min.js -P ${HTMLX_DIR}
 
 tailwind-install:
