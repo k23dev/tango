@@ -20,7 +20,7 @@ func FindOneCategory(c echo.Context, tapp *webcore.TangoApp) error {
 	if category.ID != 0 {
 		return utils.Render(c, views.CategoriesShowOne(tapp.GetTitleAndVersion(), *category))
 	} else {
-		return utils.RenderNotFound(c)
+		return c.Redirect(http.StatusMovedPermanently, "404")
 	}
 }
 
