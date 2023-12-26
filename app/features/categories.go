@@ -38,7 +38,7 @@ func FindAllCategories(c echo.Context, tapp *webcore.TangoApp) error {
 	counter, _ := cat.Count(tapp.App.DB.Primary)
 	pagination := pagination.NewPagination(currentPage, itemsPerPage, counter)
 	categories, _ := cat.FindAllPagination(tapp.App.DB.Primary, itemsPerPage, currentPage)
-	// categories, _ := cat.FindAll(tapp.App.DB.Primary)
+
 	return utils.Render(c, views.CategoriesShowList(tapp.GetTitleAndVersion(), *categories, *pagination))
 }
 
@@ -63,7 +63,7 @@ func CreateCategory(c echo.Context, tapp *webcore.TangoApp) error {
 
 	cat := models.NewCategory()
 	cat.Create(tapp.App.DB.Primary, catDTO.Name)
-	// return c.String(http.StatusOK, "Categoría creada "+category.Name)
+
 	return c.Redirect(http.StatusMovedPermanently, "/categories/")
 }
 
@@ -80,7 +80,7 @@ func UpdateCategory(c echo.Context, tapp *webcore.TangoApp) error {
 	cat.Name = strings.ToLower(catDTO.Name)
 
 	cat.Update(tapp.App.DB.Primary, id, cat.Name)
-	// return c.String(http.StatusOK, "Categoría actualizada "+cat.Name)
+
 	return c.Redirect(http.StatusMovedPermanently, "/categories/")
 }
 
@@ -88,6 +88,6 @@ func DeleteCategory(c echo.Context, tapp *webcore.TangoApp) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	cat := models.NewCategory()
 	cat.Delete(tapp.App.DB.Primary, id)
-	// return c.String(http.StatusOK, "Categoría creada "+category.Name)
+
 	return c.Redirect(http.StatusMovedPermanently, "/categories/")
 }
