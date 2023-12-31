@@ -5,6 +5,18 @@ Ideal para crear APIs
 
 ## Diseño RFM (Routes Features Models)
 
+### Make automatically Route, Features, Models and views
+
+To make automatically this execute the tango_cli. Is easy
+
+    tango_cli [PACKAGE_NAME] [MODE]
+
+e.g.
+
+    tango_cli photo basic
+
+Watch the full documentation in: https://github.com/k23dev/tango_cli
+
 ### Routes
 
 Las rutas se definen en la carpeta routes dentro del archivo setuproutes allí se agregan las funciones. Para poder acceder a las funcionalidades de Fiber o Gorm o la configuración de la app se debe pasar una variable
