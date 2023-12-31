@@ -104,3 +104,10 @@ tailwind-dev:
 
 tailwind-build:
 	npx tailwindcss -i ./app/views/tailwind.css -o ./public/assets/css/app.css --minify
+
+cli-install:
+	git clone https://github.com/k23dev/tango_cli
+	cd tango_cli
+	GOOS=linux GOARCH=amd64 go build -o tango_cli -gccgoflags "-w -s"
+	chmod +x tango_cli
+	cp tango_cli ../
