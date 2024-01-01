@@ -63,6 +63,7 @@ templates-clean:
 	rm -f ${VIEWS_DIR}components/*.go
 	rm -f ${VIEWS_DIR}layouts/*.go
 	rm -f ${VIEWS_DIR}forms/*.go
+	rm -f ${VIEWS_DIR}tables/*.go
 	rm -f ${VIEWS_DIR}menus/*.go
 	rm -f ${VIEWS_DIR}*.go
 

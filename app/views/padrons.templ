@@ -1,0 +1,43 @@
+
+package views
+
+import (
+    "github.com/k23dev/tango/app/views/layouts"
+    "github.com/k23dev/tango/app/models"
+	"github.com/k23dev/tango/app/views/tables"
+	"github.com/k23dev/tango/app/views/forms"
+    "github.com/k23dev/tango/pkg/pagination"
+)
+
+templ PadronsShowList(appTitle string,padrons []models.Padron,pagination pagination.Pagination){
+    @layouts.Default(appTitle){
+        @tables.Padrons(padrons,pagination)
+    }
+
+}
+
+templ PadronsShowOne(appTitle string,p models.Padron){
+    @layouts.Default(appTitle){
+        <h1>Padron</h1>
+        <h2>{p.Name}</h2>
+    }
+}
+
+templ PadronsFormCreate(appTitle string){
+    @layouts.Default(appTitle){
+        @forms.Padron("/padrons/create","")
+    }
+}
+
+templ PadronsFormUpdate(appTitle string,p *models.Padron){
+    @layouts.Default(appTitle){
+        @forms.Padron("/padrons/update/"+p.GetIDAsString(),p.Name)
+    }
+}
+
+templ PadronsDelete(appTitle string,p *models.Padron){
+    @layouts.Default(appTitle){
+        <h1>Borrar padron</h1>
+    }
+}
+	

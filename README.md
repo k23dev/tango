@@ -78,6 +78,13 @@ Para genenerar un build ejecutar el comando
 
     make build
 
+## DEBUG
+
+Hay un paquete de debug junto a los errores manejados por tango.
+
+Una función útil para debuguear es:
+
+    tango_errors.Debug("nombre",fmt.Sprintf("%v",variable))
 
 ## HTMLX
 
