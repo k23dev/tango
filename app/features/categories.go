@@ -13,8 +13,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var itemsPerPage = 15
-
 func FindOneCategory(c echo.Context, tapp *webcore.TangoApp) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 
