@@ -10,6 +10,11 @@ type PasswordStrenghtChecker struct {
 	Max int
 }
 
+type PasswordEvaluation struct {
+	Strenght string
+	Points   int
+}
+
 func NewPasswordStrenght(min, max int) *PasswordStrenghtChecker {
 	return &PasswordStrenghtChecker{
 		Min: min,
@@ -17,7 +22,7 @@ func NewPasswordStrenght(min, max int) *PasswordStrenghtChecker {
 	}
 }
 
-func (ps *PasswordStrenghtChecker) Check(password string) int {
+func (ps *PasswordStrenghtChecker) check(password string) int {
 	// Puntuación inicial
 	points := 0
 
@@ -36,13 +41,22 @@ func (ps *PasswordStrenghtChecker) Check(password string) int {
 	return points
 }
 
-func (ps *PasswordStrenghtChecker) Evaluate(points int) string {
+func (ps *PasswordStrenghtChecker) evaluate(points int) string {
 	if points < 0 {
 		return "weak"
 	} else if points < 5 {
 		return "moderate"
 	} else {
 		return "strong"
+	}
+}
+
+func (ps *PasswordStrenghtChecker) CheckAndEvaluate(password string) *PasswordEvaluation {
+	points := ps.check(password)
+	eval := ps.evaluate(points)
+	return &PasswordEvaluation{
+		Strenght: eval,
+		Points:   points,
 	}
 }
 
@@ -72,7 +86,7 @@ func (ps *PasswordStrenghtChecker) pointsForDiversity(password string) int {
 
 func (ps *PasswordStrenghtChecker) pointsForSpecialChars(password string) int {
 	// Asignar puntuación por el uso de caracteres especiales
-	specialChars := regexp.MustCompile(`[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]`)
+	specialChars := regexp.MustCompile(`[ !@#$%^&*()_+{}\[\]:;<>,.?~\\/-]`)
 	if specialChars.MatchString(password) {
 		return 2
 	}

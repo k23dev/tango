@@ -36,5 +36,26 @@ func ValidatePassword(password string, minLen, maxLen int) (string, error) {
 			Message: "Invalid password",
 		}
 	}
+}
+
+// Validate and satinize password and verify is not weak
+func ValidatePasswordStrong(password string, minLen, maxLen int) (string, error) {
+
+	passChecker := passwordstrenght.NewPasswordStrenght(minLen, maxLen)
+
+	if password != "" {
+		passEval := passChecker.CheckAndEvaluate(password)
+		if passEval.Strenght == "weak" {
+			return "", tango_errors.ReturnDefault("Password", "Password must be stronger.", 0)
+		}
+		password = template.HTMLEscapeString(password)
+		return password, nil
+	} else {
+		return "", &tango_errors.DefaultError{
+			Name:    "Password",
+			Code:    0,
+			Message: "Invalid password",
+		}
+	}
 
 }
