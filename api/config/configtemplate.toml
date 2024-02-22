@@ -1,0 +1,23 @@
+# APP
+app_name="Tango"
+app_version="1.5.0"
+app_server_protocol="http"
+app_server_host="localhost"
+app_server_port=9000
+app_setup_enabled=true
+app_debug_mode=true
+
+# CORS
+app_CORS_Origins="127.0.0.1:5432,127.0.0.1:9000"
+app_CORS_Headers="Origin, Content-Type, Accept"
+
+# engines (sqlite / mysql / postgres)
+[db.local]
+    connName="local"
+    engine="sqlite"
+    host=""
+    port=""
+    user=""
+    password=""
+    dbname="./_db/mylocal"
+
