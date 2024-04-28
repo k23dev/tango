@@ -1,0 +1,30 @@
+// el rootpath debe tomarse desde el directorio desde donde estoy ejecutando el gomake
+$ROOTPATH="./app"
+$binary_name = "app.bin"
+$frontend_dir="./frontend2"
+
+setup{
+    mkdir data
+    go run ./api
+    go mod tidy
+}
+
+build2{
+    mkdir data
+    // Esto es un comentario
+    mkdir db
+    go run ./appi
+    echo $binary_name
+}
+
+frontend{
+    mkdir $frontend_dir
+    cd $frontend_dir
+
+    echo 'Creating frontend'
+
+    npm create astro@latest
+    npx astro add tailwind
+    npx astro add svelte
+    npm install flowbite
+}

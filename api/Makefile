@@ -22,9 +22,11 @@ go-install-deps:
 build-linux:
 	# create directories
 	mkdir -p ${BUILD_DIR}
-	mkdir ${BUILD_DIR_LINUX}/_db
-	mkdir ${BUILD_DIR_LINUX}/logs
-	mkdir ${BUILD_DIR_LINUX}/public
+	mkdir -p ${BUILD_DIR_LINUX}
+	rm -rf ${BUILD_DIR_LINUX}/*
+	mkdir -p ${BUILD_DIR_LINUX}/_db
+	mkdir -p ${BUILD_DIR_LINUX}/logs
+	mkdir -p ${BUILD_DIR_LINUX}/public
 
 	# copy the config files and seeds
 	cp -r ./config ${BUILD_DIR_LINUX}/config
@@ -38,9 +40,11 @@ build-linux:
 build-linuxarm64:
 	# create directories
 	mkdir -p ${BUILD_DIR}
-	mkdir ${BUILD_DIR_LINUXARM64}/_db
-	mkdir ${BUILD_DIR_LINUXARM64}/logs
-	mkdir ${BUILD_DIR_LINUXARM64}/public
+	mkdir -p ${BUILD_DIR_LINUXARM64}
+	rm -rf ${BUILD_DIR_LINUXARM64}/*
+	mkdir -p ${BUILD_DIR_LINUXARM64}/_db
+	mkdir -p ${BUILD_DIR_LINUXARM64}/logs
+	mkdir -p ${BUILD_DIR_LINUXARM64}/public
 
 	# copy the config files and seeds
 	cp -r ./config ${BUILD_DIR_LINUXARM64}/config
@@ -53,10 +57,12 @@ build-linuxarm64:
 
 build-win:
 	# create directories
+	mkdir -p ${BUILD_DIR}
 	mkdir -p ${BUILD_DIR_WIN}
-	mkdir ${BUILD_DIR_WIN}/_db
-	mkdir ${BUILD_DIR_WIN}/logs
-	mkdir ${BUILD_DIR_WIN}/public
+	rm -rf ${BUILD_DIR_WIN/*
+	mkdir -p ${BUILD_DIR_WIN}/_db
+	mkdir -p ${BUILD_DIR_WIN}/logs
+	mkdir -p ${BUILD_DIR_WIN}/public
 
 	# copy the config files and seeds
 	cp -r ./config ${BUILD_DIR_WIN}/config

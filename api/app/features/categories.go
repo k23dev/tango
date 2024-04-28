@@ -11,7 +11,7 @@ import (
 
 const categoriesPagination = false
 
-// const categoriesPaginationItemsPerPage = 15
+const categoriesPaginationItemsPerPage = 15
 
 func FindOneCategory(ctx echo.Context, tapp *webcore.TangoApp) error {
 	id, _ := strconv.Atoi(ctx.Param("id"))
@@ -39,7 +39,7 @@ func FindAllCategories(ctx echo.Context, tapp *webcore.TangoApp) error {
 		// counter, _ := c.Count(tapp.App.DB.Primary)
 		// pagination := pagination.NewPagination(currentPage,categoriesPaginationItemsPerPage,counter)
 
-		cBuf, _ = c.FindAllPagination(tapp.App.DB.Primary, itemsPerPage, currentPage)
+		cBuf, _ = c.FindAllPagination(tapp.App.DB.Primary, categoriesPaginationItemsPerPage, currentPage)
 	} else {
 		cBuf, _ = c.FindAll(tapp.App.DB.Primary)
 	}

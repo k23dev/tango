@@ -9,6 +9,7 @@ const assetsPath = publicPath + "/assets"
 
 func SetupStaticRoutes(server *echo.Echo) {
 
+	server.Static("/", publicPath)
 	server.Static("/public", publicPath)
 	server.Static("/assets", assetsPath)
 	server.Static("/assets/js", assetsPath+"/js")

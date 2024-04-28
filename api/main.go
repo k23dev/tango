@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/k23dev/go4it"
 	"github.com/k23dev/tango/app"
 	"github.com/k23dev/tango/pkg/webcore"
@@ -23,6 +21,9 @@ func main() {
 	app_config.Connect2Db("local")
 	app_config.DB.SetPrimaryDB(0)
 
+	// add the default conection to the auth package
+	app_config.DB.SetAuthDB(0)
+
 	tapp.PrintAppInfo()
 
 	// Middleware
@@ -42,13 +43,6 @@ func main() {
 	// interact.OpenInBrowser("http://" + tapp.GetAppUrl())
 
 	// Start server
-	if tapp.App.Config.App_debug_mode {
-		tapp.Server.Logger.Fatal(tapp.Server.Start(":" + tapp.GetPortAsStr()))
-	} else {
-		// tapp.Server.Start(":" + tapp.GetPortAsStr())
-		if err := tapp.Server.Start(":8080"); err != http.ErrServerClosed {
-			tapp.Server.Logger.Fatal(err)
-		}
-	}
+	tapp.Server.Logger.Fatal(tapp.Server.Start(":" + tapp.GetPortAsStr()))
 
 }
