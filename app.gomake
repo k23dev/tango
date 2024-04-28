@@ -17,14 +17,20 @@ build2{
     echo $binary_name
 }
 
-frontend{
-    mkdir $frontend_dir
+create_frontend2{
+    //mkdir $frontend_dir
     cd $frontend_dir
-
+    pwd
     echo 'Creating frontend'
 
     npm create astro@latest
-    npx astro add tailwind
-    npx astro add svelte
-    npm install flowbite
+    //npx astro add tailwind
+    //npx astro add svelte
+    //npm install flowbite
+}
+
+create_frontend{
+    mkdir $frontend_dir
+    echo Ir a la carpeta $frontend_dir y ejecutar esto:
+    echo npm create astro@latest && npx astro add tailwind && npx astro add svelte && npm install flowbite
 }

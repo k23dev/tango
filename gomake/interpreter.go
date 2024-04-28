@@ -161,7 +161,7 @@ func (in *Interpreter) replaceVariableNameForValue(line string) string {
 	if _, exists := in.Script_variables[varName]; exists {
 		return strings.ReplaceAll(line, varName, in.Script_variables[varName])
 	}
-	return "-"
+	return line
 }
 
 func (in *Interpreter) WorkLineCloseTask() {
@@ -192,7 +192,7 @@ func (in *Interpreter) RunTask() {
 
 func (in *Interpreter) Test() {
 	// Imprime el mapa de nombres binarios
-	fmt.Println("Nombres de ROOTPATH: \"" + in.Script_rootpath + "\"")
+	fmt.Println("Script ROOTPATH: \"" + in.Script_rootpath + "\"")
 	fmt.Println("----------")
 	// Imprime el mapa de nombres binarios
 	fmt.Println("Nombres de variables encontrados:")

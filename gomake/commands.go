@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -32,14 +33,19 @@ func (cr *CommandRunner) RunLines(lines []string) {
 }
 
 func (cr *CommandRunner) isSpecialCmdAndExecute(cmd string, args []string) bool {
-	isSpecial := false
+	isSpecial := true
 
 	switch cmd {
 	case "mkdir":
-		isSpecial = true
 		cr.cmdMkdir(args[0])
 	case "cd":
 		cr.cmdCd(args[0])
+	case "echo":
+		cr.cmdEcho(strings.Join(args, " "))
+	case "pwd":
+		cr.cmdRun("pwd")
+	default:
+		isSpecial = false
 	}
 	return isSpecial
 
@@ -50,7 +56,7 @@ func (cr *CommandRunner) cmdRunSliceArgs(name string, arg []string) error {
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	log.Printf("$ %s\n", cmd.String())
+	log.Printf("> %s\n", cmd.String())
 	return cmd.Run()
 }
 
@@ -97,4 +103,8 @@ func (cr *CommandRunner) cmdCd(dirpath string) error {
 	}
 
 	return nil
+}
+
+func (cr *CommandRunner) cmdEcho(msg string) {
+	fmt.Println(msg)
 }

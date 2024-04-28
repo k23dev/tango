@@ -36,6 +36,7 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
 	// execute the task
 	interpreter.RunTask()
 
