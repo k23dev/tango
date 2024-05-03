@@ -1,6 +1,6 @@
 package templates
 
-func (t *Templates) Route() string {
+func (t *Templates) RouteAPI() string {
 	t.setReplacements()
 
 	template := `
@@ -17,37 +17,27 @@ func $PL$Routes(tapp *webcore.TangoApp, rootPath *echo.Group) {
 	feat:=features.New$PC$Feature(tapp)
 
 	$PL$.GET(":id", func(ctx echo.Context) error {
-		feat.setCtx(ctx)
+		feat.SetCtx(ctx)
 		return feat.FindOne()
 	})
 
 	$PL$.GET("", func(ctx echo.Context) error {
-		feat.setCtx(ctx)
+		feat.SetCtx(ctx)
 		return feat.FindAll()
 	})
 
-	$PL$.GET("new", func(ctx echo.Context) error {
-		feat.setCtx(ctx)
-		return feat.ShowForm(, true)
-	})
-
-	$PL$.GET("edit/:id", func(ctx echo.Context) error {
-		feat.setCtx(ctx)
-		return feat.ShowForm(, false)
-	})
-
 	$PL$.POST("create", func(ctx echo.Context) error {
-		feat.setCtx(ctx)
-		return featufres.Create()
+		feat.SetCtx(ctx)
+		return feat.Create()
 	})
 
-	$PL$.POST("update/:id", func(ctx echo.Context) error {
-		feat.setCtx(ctx)
+	$PL$.PUT("update/:id", func(ctx echo.Context) error {
+		feat.SetCtx(ctx)
 		return feat.Update()
 	})
 
-	$PL$.GET("delete/:id", func(ctx echo.Context) error {
-		feat.setCtx(ctx)
+	$PL$.DELETE("delete/:id", func(ctx echo.Context) error {
+		feat.SetCtx(ctx)
 		return feat.Delete()
 	})
 }

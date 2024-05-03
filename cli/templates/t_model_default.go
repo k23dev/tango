@@ -1,6 +1,6 @@
 package templates
 
-func (t *Templates) ModelAPI() string {
+func (t *Templates) Models() string {
 
 	t.setReplacements()
 
@@ -22,6 +22,7 @@ type $SC$ struct {
 }
 type $SC$DTO struct {
 `
+	template += "	ID uint `json:\"id\" param:\"id\" query:\"id\" form:\"id\"` \n"
 	template += "	Name string `json:\"name\" param:\"name\" query:\"name\" form:\"name\"`"
 	template += `
 }
@@ -34,6 +35,20 @@ func New$SC$() *$SC$ {
 	return &$SC${}
 }
 
+func ($FL$ *$SC$) ConvertToDTO() *$SC$DTO {
+	return &$SC$DTO{
+		ID:   $FL$.ID,
+		Name: $FL$.Name,
+	}
+}
+
+func ($FL$ *$SC$) ConvertFromDTO(dto *$SC$DTO) *$SC$ {
+	return &$SC${
+		ID:   $FL$.ID,
+		Name: $FL$.Name,
+	}
+}
+
 func ($FL$ *$SC$) Count(db *gorm.DB) (int, error) {
 	counter := &$SC$Counter{}
 	db.Model(&$SC${}).Select("count(ID) as total").Find(&counter)
@@ -44,26 +59,18 @@ func ($FL$ *$SC$) FindOne(db *gorm.DB, id int) (*$SC$, error) {
 	var $SL$ $SC$
 	db.First(&$SL$, id)
 	if $SL$.ID == 0 {
-		return nil, &tango_errors.ModelError{
-			ModelName: "$SC$",
-			Code:      0,
-			Message:   tango_errors.MsgIDNotFound(id),
-		}
+		return nil, tango_errors.ReturnModel("$SC$", tango_errors.MsgNotFound(), 0)
 	}
 	return &$SL$, nil
 }
 
-func ($FL$ *$SC$) FindAll(db *gorm.DB) ([]$SC$, error) {
+func ($FL$ *$SC$) FindAll(db *gorm.DB) (*[]$SC$, error) {
 	var $PL$ []$SC$
 	db.Order("created_at ASC").Find(&$PL$)
 	if len($PL$) <= 0 {
-		return nil, &tango_errors.ModelError{
-			ModelName: "$SC$",
-			Code:      0,
-			Message:   tango_errors.MsgZeroRecordsFound(),
-		}
+		return nil, tango_errors.ReturnModel("$SC$", tango_errors.MsgZeroRecordsFound(), 0)
 	}
-	return $PL$, nil
+	return &$PL$, nil
 }
 
 func ($FL$ *$SC$) FindAllPagination(db *gorm.DB, itemsPerPage, currentPage int) (*[]$SC$, error) {
@@ -71,28 +78,37 @@ func ($FL$ *$SC$) FindAllPagination(db *gorm.DB, itemsPerPage, currentPage int) 
 
 	db.Order("created_at ASC").Limit(itemsPerPage).Offset(itemsPerPage * currentPage).Find(&$PL$)
 	if len($PL$) <= 0 {
-		return nil, &tango_errors.ModelError{
-			ModelName: "$SC$",
-			Code:      0,
-			Message:   tango_errors.MsgZeroRecordsFound(),
-		}
+		return nil, tango_errors.ReturnModel("$SC$", tango_errors.MsgZeroRecordsFound(), 0)
 	}
 	return &$PL$, nil
 }
 
 func ($FL$ *$SC$) Create(db *gorm.DB, dto $SC$DTO) (*$SC$, error) {
-	$FL$.SatinizeDTOCreate(&dto)
+	$FL$.satinizeDTOCreate(&dto)
 	$SL$ := $SC${
 		Name: dto.Name,
 	}
-	db.Create(&$SL$)
+	result := db.Create(&$SL$)
+	if result.Error != nil {
+		return &$SC${}, result.Error
+	}
 	return &$SL$, nil
 }
 
 func ($FL$ *$SC$) Update(db *gorm.DB, id int, dto $SC$DTO) (*$SC$, error) {
-	$FL$.SatinizeDTOUpdate(&dto)
-	db.Model(&$SC${}).Where("ID =?", id).Update("name", dto.Name)
-	return $FL$, nil
+	$FL$.satinizeDTOUpdate(&dto)
+
+	$SL$ := &$SC${}
+	db.First($SL$, "id=?", id)
+	if $SL$.ID == 0 {
+		return $SL$, tango_errors.ReturnModel("$SC$", tango_errors.MsgIDNotFound(id), 0)
+	}
+
+	// changes
+	$SL$.Name = dto.Name
+	
+	db.Save($SL$)
+	return $SL$, nil
 }
 
 func ($FL$ *$SC$) Delete(db *gorm.DB, id int) (*$SC$, error) {
@@ -104,17 +120,15 @@ func ($FL$ *$SC$) Delete(db *gorm.DB, id int) (*$SC$, error) {
 	return $SL$, nil
 }
 
-func ($FL$ *$SC$) GetIDAsString() string {
-	return fmt.Sprintf("%d", $FL$.ID)
-}	
-
-func ($FL$ *$SC$) SatinizeDTOCreate(dto *$SC$DTO) error {
+func ($FL$ *$SC$) satinizeDTOCreate(dto *$SC$DTO) error {
 	// TODO
+	dto.Name = strings.TrimSpace(dto.Name)
 	return nil
 }
 
-func ($FL$ *$SC$) SatinizeDTOUpdate(dto *$SC$DTO) error {
+func ($FL$ *$SC$) satinizeDTOUpdate(dto *$SC$DTO) error {
 	// TODO
+	dto.Name = strings.TrimSpace(dto.Name)
 	return nil
 }
 	`

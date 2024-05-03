@@ -53,7 +53,7 @@ func (fm *FileMaker) setFilename(filename string) {
 
 func (fm *FileMaker) SetRootPath(path string) {
 	if path != "" {
-		fm.RootPath = path + "/"
+		fm.RootPath = path
 		return
 	}
 
@@ -89,12 +89,16 @@ func (fm *FileMaker) CheckIfFileExists(filepath string) bool {
 func (fm *FileMaker) MakeIt() {
 	// TODO Comprobar si el archivo existe si existe pide lo que haga en modo forzoso. De ser así se eliminan los archivos y se crean estos nuevos.
 	switch fm.Mode {
+	case "api":
+		fm.buildModeAPI()
 	case "basic":
 		fm.buildModeBasic()
 	case "full":
 		fm.buildModeFull()
 	case "fullwithselector":
 		fm.buildModeFullWithSelector()
+	case "model":
+		fm.buildModeModel()
 	default:
 		fmt.Println("El modo seleccionado no es correcto. Puede elegir entre BASIC / FULL / FULL+")
 	}
@@ -130,10 +134,15 @@ func (fm *FileMaker) GetFilePathFilename(prefix, posfix string, isPlural bool) s
 
 func (fm *FileMaker) selectTemplate(template string) {
 	switch template {
+
 	case "model":
-		fm.TemplateSelected = fm.Templates.Model()
+		fm.TemplateSelected = fm.Templates.Models()
+	case "feature_api":
+		fm.TemplateSelected = fm.Templates.FeatureAPI()
 	case "feature":
 		fm.TemplateSelected = fm.Templates.Feature()
+	case "route_api":
+		fm.TemplateSelected = fm.Templates.RouteAPI()
 	case "route":
 		fm.TemplateSelected = fm.Templates.Route()
 	case "view":
@@ -198,6 +207,22 @@ func (fm *FileMaker) builderWithFilenameFixes(directory, prefix, posfix, extensi
 	} else {
 		fmt.Println("No hay existe ese template de archivo")
 	}
+}
+
+func (fm *FileMaker) buildModeModel() {
+	// todo
+	fm.selectTemplate("model")
+	fm.builder("models", "go", false)
+}
+
+func (fm *FileMaker) buildModeAPI() {
+	// todo
+	fm.selectTemplate("model")
+	fm.builder("models", "go", false)
+	fm.selectTemplate("feature_api")
+	fm.builder("features", "go", true)
+	fm.selectTemplate("route_api")
+	fm.builder("routes", "go", true)
 }
 
 func (fm *FileMaker) buildModeBasic() {

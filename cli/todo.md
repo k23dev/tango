@@ -22,4 +22,12 @@
 
 9.[] Refactor de filemaker: Agregarle campos como prefijo y subfijo para hacer más sencillo la creción de archivos y no andar pasando tanto por variables
 
-10.[] Refactorizar el el código de templates. separándolo por archivos por cada uno de los templates
+10.[] Refactorizar el el código de templates. separándolo por archivos por cada uno de los templates.
+
+11.[] Separar todos los templates de: features, routes, models, views.
+
+12.[] Poder crear sólo modelos
+
+13.[] Templates es un package builder
+
+14.[] Poder definirle al paquete que tiene de vista tiene (API,TEMPL) dependiendo de esto es si crea una vista o no.

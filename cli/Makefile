@@ -1,7 +1,7 @@
 BINARY_NAME=tango_cli
 BINARY_NAME_WIN=tango_cli.exe
-BUILD_DIR=../
-BUILD_DIR_WIN=../
+BUILD_DIR=./build
+BUILD_DIR_WIN=./build/windows
 
 dev:
 	go run .
