@@ -22,9 +22,6 @@ examples and usage of using your application. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
 var createCmd = &cobra.Command{
@@ -91,10 +88,6 @@ var createPackApiCmd = &cobra.Command{
 			packageName = args[0]
 		}
 
-		// if len(args) > 1 {
-		// templateSelected = args[1]
-		// }
-
 		p.Read(packageName)
 		fm = filemaker.New(packageName)
 
@@ -130,10 +123,6 @@ var createModelCmd = &cobra.Command{
 			packageName = args[0]
 		}
 
-		// if len(args) > 1 {
-		// templateSelected = args[1]
-		// }
-
 		p.Read(packageName)
 		fm = filemaker.New(packageName)
 
@@ -154,6 +143,37 @@ var createModelCmd = &cobra.Command{
 	},
 }
 
+var createHttpClient = &cobra.Command{
+	Use:   "httpclient",
+	Short: "Crea una clase para realizar las peticiones ajax al servidor.",
+	Long:  `Crea una clase para realizar las peticiones ajax al servidor.`,
+	Run: func(cmd *cobra.Command, args []string) {
+
+		p := parser.New()
+		var fm *filemaker.FileMaker
+
+		packageName := "_tangoclient"
+		templateSelected := "httpclient"
+
+		p.Read(packageName)
+		fm = filemaker.New(packageName)
+
+		// PATH
+		fm.SetRootPath("./frontend")
+		fm.SetAppDir("")
+		// aca se define que se crea
+		fm.SetMode(templateSelected)
+		// modo forzado
+		fm.SetForcedMode(true)
+
+		// Creación
+		fmt.Println("Making: ", os.Args[1])
+		fmt.Println("Execuit it!")
+		fm.MakeIt()
+
+	},
+}
+
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
@@ -165,7 +185,7 @@ func Execute() {
 
 func init() {
 
-	appBanner("0.9.1")
+	appBanner("0.9.2")
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
@@ -179,4 +199,5 @@ func init() {
 	rootCmd.AddCommand(createPackCmd)
 	rootCmd.AddCommand(createPackApiCmd)
 	rootCmd.AddCommand(createModelCmd)
+	rootCmd.AddCommand(createHttpClient)
 }

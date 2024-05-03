@@ -42,6 +42,7 @@ func (fm *FileMaker) setFileTypes() {
 	ftypes := []string{
 		"templ",
 		"go",
+		"ts",
 	}
 
 	fm.Filetypes = ftypes
@@ -89,6 +90,8 @@ func (fm *FileMaker) CheckIfFileExists(filepath string) bool {
 func (fm *FileMaker) MakeIt() {
 	// TODO Comprobar si el archivo existe si existe pide lo que haga en modo forzoso. De ser así se eliminan los archivos y se crean estos nuevos.
 	switch fm.Mode {
+	case "httpclient":
+		fm.buildHttpClient()
 	case "api":
 		fm.buildModeAPI()
 	case "basic":
@@ -100,6 +103,7 @@ func (fm *FileMaker) MakeIt() {
 	case "model":
 		fm.buildModeModel()
 	default:
+		fmt.Printf("%+v \n", fm.Mode)
 		fmt.Println("El modo seleccionado no es correcto. Puede elegir entre BASIC / FULL / FULL+")
 	}
 }
@@ -147,6 +151,8 @@ func (fm *FileMaker) selectTemplate(template string) {
 		fm.TemplateSelected = fm.Templates.Route()
 	case "view":
 		fm.TemplateSelected = fm.Templates.View()
+	case "httpclient":
+		fm.TemplateSelected = fm.Templates.HttpClient()
 	default:
 		fm.TemplateSelected = ""
 	}
@@ -207,6 +213,12 @@ func (fm *FileMaker) builderWithFilenameFixes(directory, prefix, posfix, extensi
 	} else {
 		fmt.Println("No hay existe ese template de archivo")
 	}
+}
+
+func (fm *FileMaker) buildHttpClient() {
+	// todo
+	fm.selectTemplate("httpclient")
+	fm.builder("src", "ts", false)
 }
 
 func (fm *FileMaker) buildModeModel() {
