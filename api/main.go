@@ -40,7 +40,7 @@ func main() {
 	app.AppSetup(&tapp)
 
 	// open app in default browser
-	// interact.OpenInBrowser("http://" + tapp.GetAppUrl())
+	interact.OpenInBrowser("http://" + tapp.GetAppUrl())
 
 	// Start server
 	tapp.Server.Logger.Fatal(tapp.Server.Start(":" + tapp.GetPortAsStr()))

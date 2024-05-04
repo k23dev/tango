@@ -1,36 +1,33 @@
 // el rootpath debe tomarse desde el directorio desde donde estoy ejecutando el gomake
-$ROOTPATH="./app"
-$binary_name = "app.bin"
-$frontend_dir="./frontend2"
+$ROOTPATH="./build"
+$binary_name = "api.bin"
+$frontend_dir="./frontend"
+$api_build_path="./build/api"
 
 setup{
-    mkdir data
-    go run ./api
-    go mod tidy
+    mkdir app
+    mkdir app/_db
+    mkdir app/config
+
+    //go run ./api
+    //go mod tidy
+    cp ./api/config/appconfig.toml ./build/app/config
 }
 
-build2{
-    mkdir data
-    // Esto es un comentario
-    mkdir db
-    go run ./appi
-    echo $binary_name
+build_setup{
+    mkdir app
+    mkdir app/_db
+    mkdir app/config
+    mkdir app/seeds
+
+    cp ./api/config/appconfig.toml ./build/app/config
+    cp -r ./api/seeds ./build/app/seeds
 }
 
-create_frontend2{
-    //mkdir $frontend_dir
-    cd $frontend_dir
-    pwd
-    echo 'Creating frontend'
-
-    npm create astro@latest
-    //npx astro add tailwind
-    //npx astro add svelte
-    //npm install flowbite
+compile_linux{
+    //compile into binary file
+	GOOS=linux GOARCH=amd64 go build ./api -o $binary_name -gccgoflags "-w -s"
+	chmod +x $binary_name
+	mv $binary_name ./build/app
 }
 
-create_frontend{
-    mkdir $frontend_dir
-    echo Ir a la carpeta $frontend_dir y ejecutar esto:
-    echo npm create astro@latest && npx astro add tailwind && npx astro add svelte && npm install flowbite
-}

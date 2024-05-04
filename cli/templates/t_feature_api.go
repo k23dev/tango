@@ -32,95 +32,95 @@ func New$PC$Feature(tapp *webcore.TangoApp) *$PC$Feature {
 	}
 }
 
-func (f *$PC$Feature) SetCtx(ctx echo.Context) {
-	f.ctx = ctx
+func (me *$PC$Feature) SetCtx(ctx echo.Context) {
+	me.ctx = ctx
 }
 
-func (f *$PC$Feature) SetDB(db *gorm.DB) {
-	f.db = db
+func (me *$PC$Feature) SetDB(db *gorm.DB) {
+	me.db = db
 }
 
-func (f *$PC$Feature) FindOne() error {
-	id, _ := strconv.Atoi(f.ctx.Param("id"))
+func (me *$PC$Feature) FindOne() error {
+	id, _ := strconv.Atoi(me.ctx.Param("id"))
 
 	$FL$ := models.New$SC$()
-	$SL$, err := $FL$.FindOne(f.tapp.App.DB.Primary, id)
-	if err != nil {
-		return f.ctx.JSON(http.StatusNotFound, err)
+	$SL$, err := $FL$.FindOne(me.tapp.App.DB.Primary, id)
+	imeerr != nil {
+		return me.ctx.JSON(http.StatusNotFound, err)
 	}
-	return f.ctx.JSON(http.StatusOK,$SL$.ConvertToDTO())
+	return me.ctx.JSON(http.StatusOK,$SL$.ConvertToDTO())
 }
 
-func (f *$PC$Feature) FindAll() error {
-	var $FL$Buf *[]models.$SC$
+func (me *$PC$Feature) FindAll() error {
+	var $FL$Bume *[]models.$SC$
 	$FL$ := models.New$SC$()
 
-	if f.HasPagination{
-		queryPage := f.ctx.Param("page")
+	imeme.HasPagination{
+		queryPage := me.ctx.QueryParam("page")
 		currentPage:= 0
-		if queryPage != "" {
+		imequeryPage != "" {
 			currentPage, _ = strconv.Atoi(queryPage)
 		}
 	
 		// total de registros en la db
-		// counter, _ := c.Count(f.tapp.App.DB.Primary)
-		// pagination := pagination.NewPagination(currentPage,f.PaginationItemsPerPage,counter)
+		// counter, _ := c.Count(me.tapp.App.DB.Primary)
+		// pagination := pagination.NewPagination(currentPage,me.PaginationItemsPerPage,counter)
 	
-		$FL$Buf, _ = $FL$.FindAllPagination(f.tapp.App.DB.Primary, f.PaginationItemsPerPage, currentPage)
+		$FL$Buf, _ = $FL$.FindAllPagination(me.tapp.App.DB.Primary, me.PaginationItemsPerPage, currentPage)
 	}else{
-		$FL$Buf, _ = $FL$.FindAll(f.tapp.App.DB.Primary)
+		$FL$Buf, _ = $FL$.FindAll(me.tapp.App.DB.Primary)
 	}
 
-	return f.ctx.JSON(http.StatusOK,$FL$Buf)
+	return me.ctx.JSON(http.StatusOK,$FL$Buf)
 
 }
 
-func (f *$PC$Feature) Create() error {
+func (me *$PC$Feature) Create() error {
 	// get the incoming values
 	$FL$DTO := models.$SC$DTO{}
-	if err := f.ctx.Bind(&$FL$DTO); err != nil {
-		return f.ctx.JSON(http.StatusBadRequest, "")
+	imeerr := me.ctx.Bind(&$FL$DTO); err != nil {
+		return me.ctx.JSON(http.StatusBadRequest, "")
 	}
 
 	$FL$ := models.New$SC$()
-	$FL$Buf,err:= $FL$.Create(f.tapp.App.DB.Primary, $FL$DTO)
+	$FL$Buf,err:= $FL$.Create(me.tapp.App.DB.Primary, $FL$DTO)
 
-	if err != nil {
-		return f.ctx.JSON(http.StatusBadRequest, err)
+	imeerr != nil {
+		return me.ctx.JSON(http.StatusBadRequest, err)
 	}
 
-	return f.ctx.JSON(http.StatusCreated, $FL$Buf.ConvertToDTO())
+	return me.ctx.JSON(http.StatusCreated, $FL$Bume.ConvertToDTO())
 }
 
-func (f *$PC$Feature) Update() error {
-	id, _ := strconv.Atoi(f.ctx.Param("id"))
+func (me *$PC$Feature) Update() error {
+	id, _ := strconv.Atoi(me.ctx.Param("id"))
 
 	// get the incoming values
 	$FL$DTO := models.$SC$DTO{}
-	if err := f.ctx.Bind(&$FL$DTO); err != nil {
-		return f.ctx.JSON(http.StatusBadRequest, "")
+	imeerr := me.ctx.Bind(&$FL$DTO); err != nil {
+		return me.ctx.JSON(http.StatusBadRequest, "")
 	}
 
 	$FL$ := models.New$SC$()
-	$FL$Buf, err:=$FL$.Update(f.tapp.App.DB.Primary, id, $FL$DTO)
+	$FL$Buf, err:=$FL$.Update(me.tapp.App.DB.Primary, id, $FL$DTO)
 
-	if err != nil {
-		return f.ctx.JSON(http.StatusBadRequest, err)
+	imeerr != nil {
+		return me.ctx.JSON(http.StatusBadRequest, err)
 	}
 
-	return f.ctx.JSON(http.StatusOK, $FL$Buf.ConvertToDTO())
+	return me.ctx.JSON(http.StatusOK, $FL$Bume.ConvertToDTO())
 }
 
-func (f *$PC$Feature) Delete() error {
-	id, _ := strconv.Atoi(f.ctx.Param("id"))
+func (me *$PC$Feature) Delete() error {
+	id, _ := strconv.Atoi(me.ctx.Param("id"))
 	$FL$ := models.New$SC$()
-	$FL$Buf,err:=$FL$.Delete(f.tapp.App.DB.Primary, id)
+	$FL$Buf,err:=$FL$.Delete(me.tapp.App.DB.Primary, id)
 	
-	if err != nil {
-		return f.ctx.JSON(http.StatusBadRequest, err)
+	imeerr != nil {
+		return me.ctx.JSON(http.StatusBadRequest, err)
 	}
 
-	return f.ctx.JSON(http.StatusOK, $FL$Buf.ConvertToDTO())
+	return me.ctx.JSON(http.StatusOK, $FL$Bume.ConvertToDTO())
 }
 	`
 	return t.Replacements.Replace(template)

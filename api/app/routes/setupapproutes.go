@@ -6,8 +6,7 @@ import (
 )
 
 func SetupAppRoutes(tapp *webcore.TangoApp) {
-	// rootPath := tapp.Server.Group("/api")
-	rootPath := tapp.Server.Group("")
+	rootPath := tapp.Server.Group("api")
 
 	// Auth
 	tango_auth.AuthRoutes(tapp, rootPath)

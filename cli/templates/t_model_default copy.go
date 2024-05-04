@@ -36,27 +36,27 @@ func New$SC$() *$SC$ {
 	return &$SC${}
 }
 
-func (me *$SC$) ConvertToDTO() *$SC$DTO {
+func ($FL$ *$SC$) ConvertToDTO() *$SC$DTO {
 	return &$SC$DTO{
-		ID:   me.ID,
-		Name: me.Name,
+		ID:   $FL$.ID,
+		Name: $FL$.Name,
 	}
 }
 
-func (me *$SC$) ConvertFromDTO(dto *$SC$DTO) *$SC$ {
+func ($FL$ *$SC$) ConvertFromDTO(dto *$SC$DTO) *$SC$ {
 	return &$SC${
-		ID:   me.ID,
-		Name: me.Name,
+		ID:   $FL$.ID,
+		Name: $FL$.Name,
 	}
 }
 
-func (me *$SC$) Count(db *gorm.DB) (int, error) {
+func ($FL$ *$SC$) Count(db *gorm.DB) (int, error) {
 	counter := &$SC$Counter{}
 	db.Model(&$SC${}).Select("count(ID) as total").Find(&counter)
 	return counter.Total, nil
 }
 
-func (me *$SC$) FindOne(db *gorm.DB, id int) (*$SC$, error) {
+func ($FL$ *$SC$) FindOne(db *gorm.DB, id int) (*$SC$, error) {
 	var $SL$ $SC$
 	db.First(&$SL$, id)
 	if $SL$.ID == 0 {
@@ -65,7 +65,7 @@ func (me *$SC$) FindOne(db *gorm.DB, id int) (*$SC$, error) {
 	return &$SL$, nil
 }
 
-func (me *$SC$) FindAll(db *gorm.DB) (*[]$SC$, error) {
+func ($FL$ *$SC$) FindAll(db *gorm.DB) (*[]$SC$, error) {
 	var $PL$ []$SC$
 	db.Order("created_at ASC").Find(&$PL$)
 	if len($PL$) <= 0 {
@@ -74,7 +74,7 @@ func (me *$SC$) FindAll(db *gorm.DB) (*[]$SC$, error) {
 	return &$PL$, nil
 }
 
-func (me *$SC$) FindAllPagination(db *gorm.DB, itemsPerPage, currentPage int) (*[]$SC$, error) {
+func ($FL$ *$SC$) FindAllPagination(db *gorm.DB, itemsPerPage, currentPage int) (*[]$SC$, error) {
 	$PL$ := []$SC${}
 
 	db.Order("created_at ASC").Limit(itemsPerPage).Offset(itemsPerPage * currentPage).Find(&$PL$)
@@ -84,8 +84,8 @@ func (me *$SC$) FindAllPagination(db *gorm.DB, itemsPerPage, currentPage int) (*
 	return &$PL$, nil
 }
 
-func (me *$SC$) Create(db *gorm.DB, dto $SC$DTO) (*$SC$, error) {
-	me.satinizeDTOCreate(&dto)
+func ($FL$ *$SC$) Create(db *gorm.DB, dto $SC$DTO) (*$SC$, error) {
+	$FL$.satinizeDTOCreate(&dto)
 	$SL$ := $SC${
 		Name: dto.Name,
 	}
@@ -96,8 +96,8 @@ func (me *$SC$) Create(db *gorm.DB, dto $SC$DTO) (*$SC$, error) {
 	return &$SL$, nil
 }
 
-func (me *$SC$) Update(db *gorm.DB, id int, dto $SC$DTO) (*$SC$, error) {
-	me.satinizeDTOUpdate(&dto)
+func ($FL$ *$SC$) Update(db *gorm.DB, id int, dto $SC$DTO) (*$SC$, error) {
+	$FL$.satinizeDTOUpdate(&dto)
 
 	$SL$ := &$SC${}
 	db.First($SL$, "id=?", id)
@@ -112,8 +112,8 @@ func (me *$SC$) Update(db *gorm.DB, id int, dto $SC$DTO) (*$SC$, error) {
 	return $SL$, nil
 }
 
-func (me *$SC$) Delete(db *gorm.DB, id int) (*$SC$, error) {
-	$SL$, err := me.FindOne(db, id)
+func ($FL$ *$SC$) Delete(db *gorm.DB, id int) (*$SC$, error) {
+	$SL$, err := $FL$.FindOne(db, id)
 	if err != nil {
 		return nil, err
 	}
@@ -121,13 +121,13 @@ func (me *$SC$) Delete(db *gorm.DB, id int) (*$SC$, error) {
 	return $SL$, nil
 }
 
-func (me *$SC$) satinizeDTOCreate(dto *$SC$DTO) error {
+func ($FL$ *$SC$) satinizeDTOCreate(dto *$SC$DTO) error {
 	// TODO
 	dto.Name = strings.TrimSpace(dto.Name)
 	return nil
 }
 
-func (me *$SC$) satinizeDTOUpdate(dto *$SC$DTO) error {
+func ($FL$ *$SC$) satinizeDTOUpdate(dto *$SC$DTO) error {
 	// TODO
 	dto.Name = strings.TrimSpace(dto.Name)
 	return nil
