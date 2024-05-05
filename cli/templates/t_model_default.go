@@ -45,8 +45,8 @@ func (me *$SC$) ConvertToDTO() *$SC$DTO {
 
 func (me *$SC$) ConvertFromDTO(dto *$SC$DTO) *$SC$ {
 	return &$SC${
-		ID:   me.ID,
-		Name: me.Name,
+		ID:   dto.ID,
+		Name: dto.Name,
 	}
 }
 
@@ -86,14 +86,13 @@ func (me *$SC$) FindAllPagination(db *gorm.DB, itemsPerPage, currentPage int) (*
 
 func (me *$SC$) Create(db *gorm.DB, dto $SC$DTO) (*$SC$, error) {
 	me.satinizeDTOCreate(&dto)
-	$SL$ := $SC${
-		Name: dto.Name,
-	}
+	$SL$ := me.ConvertFromDTO(&dto)
+
 	result := db.Create(&$SL$)
 	if result.Error != nil {
 		return &$SC${}, result.Error
 	}
-	return &$SL$, nil
+	return $SL$, nil
 }
 
 func (me *$SC$) Update(db *gorm.DB, id int, dto $SC$DTO) (*$SC$, error) {
