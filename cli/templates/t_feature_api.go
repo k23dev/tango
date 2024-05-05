@@ -52,13 +52,13 @@ func (me *$PC$Feature) FindOne() error {
 }
 
 func (me *$PC$Feature) FindAll() error {
-	var $FL$Bume *[]models.$SC$
+	var $FL$Buf *[]models.$SC$
 	$FL$ := models.New$SC$()
 
-	imeme.HasPagination{
+	if me.HasPagination{
 		queryPage := me.ctx.QueryParam("page")
 		currentPage:= 0
-		imequeryPage != "" {
+		if queryPage != "" {
 			currentPage, _ = strconv.Atoi(queryPage)
 		}
 	
@@ -89,7 +89,7 @@ func (me *$PC$Feature) Create() error {
 		return me.ctx.JSON(http.StatusBadRequest, err)
 	}
 
-	return me.ctx.JSON(http.StatusCreated, $FL$Bume.ConvertToDTO())
+	return me.ctx.JSON(http.StatusCreated, $FL$Buf.ConvertToDTO())
 }
 
 func (me *$PC$Feature) Update() error {
@@ -108,7 +108,7 @@ func (me *$PC$Feature) Update() error {
 		return me.ctx.JSON(http.StatusBadRequest, err)
 	}
 
-	return me.ctx.JSON(http.StatusOK, $FL$Bume.ConvertToDTO())
+	return me.ctx.JSON(http.StatusOK, $FL$Buf.ConvertToDTO())
 }
 
 func (me *$PC$Feature) Delete() error {
@@ -120,7 +120,7 @@ func (me *$PC$Feature) Delete() error {
 		return me.ctx.JSON(http.StatusBadRequest, err)
 	}
 
-	return me.ctx.JSON(http.StatusOK, $FL$Bume.ConvertToDTO())
+	return me.ctx.JSON(http.StatusOK, $FL$Buf.ConvertToDTO())
 }
 	`
 	return t.Replacements.Replace(template)
