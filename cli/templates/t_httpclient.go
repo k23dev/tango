@@ -6,13 +6,22 @@ func (t *Templates) HttpClient() string {
 	template := `
 	class TangoClient {
 		baseUrl: string;
+		defaultBaseUrl:string = "http://localhost:9000/api/";
 	
-		constructor(baseUrl: string) {
-			this.baseUrl = baseUrl;
+		constructor(baseUrl?: string) {
+			if (baseUrl){
+				this.baseUrl = baseUrl;
+			}else{
+				this.baseUrl = this.defaultBaseUrl;
+			}
 		}
 	
 		async get(url: string): Promise<any> {
 			return this.sendRequest('GET', url);
+		}
+
+		async post(url: string, data?: any): Promise<any> {
+			return this.sendRequest('POST', url, data);
 		}
 	
 		async put(url: string, data?: any): Promise<any> {
