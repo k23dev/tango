@@ -45,7 +45,7 @@ func (me *$PC$Feature) FindOne() error {
 
 	$FL$ := models.New$SC$()
 	$SL$, err := $FL$.FindOne(me.tapp.App.DB.Primary, id)
-	imeerr != nil {
+	if err != nil {
 		return me.ctx.JSON(http.StatusNotFound, err)
 	}
 	return me.ctx.JSON(http.StatusOK,$SL$.ConvertToDTO())
@@ -78,14 +78,14 @@ func (me *$PC$Feature) FindAll() error {
 func (me *$PC$Feature) Create() error {
 	// get the incoming values
 	$FL$DTO := models.$SC$DTO{}
-	imeerr := me.ctx.Bind(&$FL$DTO); err != nil {
+	if err := me.ctx.Bind(&$FL$DTO); err != nil {
 		return me.ctx.JSON(http.StatusBadRequest, "")
 	}
 
 	$FL$ := models.New$SC$()
 	$FL$Buf,err:= $FL$.Create(me.tapp.App.DB.Primary, $FL$DTO)
 
-	imeerr != nil {
+	if err != nil {
 		return me.ctx.JSON(http.StatusBadRequest, err)
 	}
 
@@ -97,14 +97,14 @@ func (me *$PC$Feature) Update() error {
 
 	// get the incoming values
 	$FL$DTO := models.$SC$DTO{}
-	imeerr := me.ctx.Bind(&$FL$DTO); err != nil {
+	if err := me.ctx.Bind(&$FL$DTO); err != nil {
 		return me.ctx.JSON(http.StatusBadRequest, "")
 	}
 
 	$FL$ := models.New$SC$()
 	$FL$Buf, err:=$FL$.Update(me.tapp.App.DB.Primary, id, $FL$DTO)
 
-	imeerr != nil {
+	if err != nil {
 		return me.ctx.JSON(http.StatusBadRequest, err)
 	}
 
@@ -116,7 +116,7 @@ func (me *$PC$Feature) Delete() error {
 	$FL$ := models.New$SC$()
 	$FL$Buf,err:=$FL$.Delete(me.tapp.App.DB.Primary, id)
 	
-	imeerr != nil {
+	if err != nil {
 		return me.ctx.JSON(http.StatusBadRequest, err)
 	}
 

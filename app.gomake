@@ -31,3 +31,12 @@ compile_linux{
 	mv $binary_name ./build/app
 }
 
+install_frontend{
+    git clone https://github.com/nicdun/astro-tech-blog frontend
+    echo then run bun i / or npm
+    echo bun update
+    echo then install svelte: bunx astro add
+    echo to build the package run: bunx --bun astro build
+}
+
+
