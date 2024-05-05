@@ -50,6 +50,8 @@ func (t *Templates) HttpClient() string {
 			}
 		}
 	}
+
+	export default TangoClient;
 	
 	// Ejemplo de uso
 	/*
