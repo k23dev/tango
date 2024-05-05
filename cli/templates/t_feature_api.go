@@ -29,6 +29,7 @@ func New$PC$Feature(tapp *webcore.TangoApp) *$PC$Feature {
 		tapp: tapp,
 		HasPagination:false,
 		PaginationItemsPerPage:15,
+		db:tapp.App.DB.Primary,
 	}
 }
 
@@ -44,7 +45,7 @@ func (me *$PC$Feature) FindOne() error {
 	id, _ := strconv.Atoi(me.ctx.Param("id"))
 
 	$FL$ := models.New$SC$()
-	$SL$, err := $FL$.FindOne(me.tapp.App.DB.Primary, id)
+	$SL$, err := $FL$.FindOne(me.db, id)
 	if err != nil {
 		return me.ctx.JSON(http.StatusNotFound, err)
 	}
@@ -63,12 +64,12 @@ func (me *$PC$Feature) FindAll() error {
 		}
 	
 		// total de registros en la db
-		// counter, _ := c.Count(me.tapp.App.DB.Primary)
+		// counter, _ := c.Count(me.db)
 		// pagination := pagination.NewPagination(currentPage,me.PaginationItemsPerPage,counter)
 	
-		$FL$Buf, _ = $FL$.FindAllPagination(me.tapp.App.DB.Primary, me.PaginationItemsPerPage, currentPage)
+		$FL$Buf, _ = $FL$.FindAllPagination(me.db, me.PaginationItemsPerPage, currentPage)
 	}else{
-		$FL$Buf, _ = $FL$.FindAll(me.tapp.App.DB.Primary)
+		$FL$Buf, _ = $FL$.FindAll(me.db)
 	}
 
 	return me.ctx.JSON(http.StatusOK,$FL$Buf)
@@ -83,7 +84,7 @@ func (me *$PC$Feature) Create() error {
 	}
 
 	$FL$ := models.New$SC$()
-	$FL$Buf,err:= $FL$.Create(me.tapp.App.DB.Primary, $FL$DTO)
+	$FL$Buf,err:= $FL$.Create(me.db, $FL$DTO)
 
 	if err != nil {
 		return me.ctx.JSON(http.StatusBadRequest, err)
@@ -102,7 +103,7 @@ func (me *$PC$Feature) Update() error {
 	}
 
 	$FL$ := models.New$SC$()
-	$FL$Buf, err:=$FL$.Update(me.tapp.App.DB.Primary, id, $FL$DTO)
+	$FL$Buf, err:=$FL$.Update(me.db, id, $FL$DTO)
 
 	if err != nil {
 		return me.ctx.JSON(http.StatusBadRequest, err)
@@ -114,7 +115,7 @@ func (me *$PC$Feature) Update() error {
 func (me *$PC$Feature) Delete() error {
 	id, _ := strconv.Atoi(me.ctx.Param("id"))
 	$FL$ := models.New$SC$()
-	$FL$Buf,err:=$FL$.Delete(me.tapp.App.DB.Primary, id)
+	$FL$Buf,err:=$FL$.Delete(me.db, id)
 	
 	if err != nil {
 		return me.ctx.JSON(http.StatusBadRequest, err)
