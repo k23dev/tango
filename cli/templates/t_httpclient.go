@@ -44,8 +44,8 @@ func (t *Templates) HttpClient() string {
 	template += "	const response = await fetch(`${this.baseUrl}${url}`, {"
 	template += `
 				method: method,
-				headers: data instanceof FormData ? {} : { 'Content-Type': 'application/json' },
-				body: data
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data)
 			});
 			return await response.json();
 		}
