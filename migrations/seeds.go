@@ -1,16 +1,16 @@
-package webcore_features
+package migrations
 
 import (
 	"log"
 	"net/http"
 
-	"github.com/k23dev/go4it/interact"
 	"github.com/k23dev/tango/app/models"
+	"github.com/k23dev/tango/pkg/tango_helpers"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
-const seedDir = "./seeds/"
+const seedDir = "./migrations/seeds/"
 
 func Seed(c echo.Context, db *gorm.DB) error {
 	seedCategories(db)
@@ -19,7 +19,7 @@ func Seed(c echo.Context, db *gorm.DB) error {
 
 func seedCategories(db *gorm.DB) {
 	cat_list := []models.Category{}
-	interact.ReadAndParseJson(seedDir+"categories.json", &cat_list)
+	tango_helpers.ReadAndParseJson(seedDir+"categories.json", &cat_list)
 
 	db.Save(&cat_list)
 	log.Println("Categories seeded")

@@ -3,11 +3,11 @@ package tango_auth
 import (
 	"net/http"
 
-	"github.com/k23dev/tango/pkg/webcore"
+	"github.com/k23dev/tango/pkg/tangoapp"
 	"github.com/labstack/echo/v4"
 )
 
-func AuthLogin(ctx echo.Context, tapp *webcore.TangoApp) error {
+func AuthLogin(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 
 	authDTO := AuthDTOLogin{}
 	if err := ctx.Bind(&authDTO); err != nil {
@@ -16,7 +16,7 @@ func AuthLogin(ctx echo.Context, tapp *webcore.TangoApp) error {
 
 	auth := NewAuth()
 
-	user, err := auth.Login(tapp.App.DB.Auth, &authDTO)
+	user, err := auth.Login(tapp.DBAuth, &authDTO)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)
 	}
@@ -31,10 +31,10 @@ func AuthLogin(ctx echo.Context, tapp *webcore.TangoApp) error {
 	return ctx.JSON(http.StatusOK, user)
 }
 
-func AuthCheck(ctx echo.Context, tapp *webcore.TangoApp) error {
+func AuthCheck(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	return nil
 }
 
-func AuthLogout(ctx echo.Context, tapp *webcore.TangoApp) error {
+func AuthLogout(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	return nil
 }

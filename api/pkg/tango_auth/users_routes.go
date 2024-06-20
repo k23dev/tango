@@ -1,11 +1,11 @@
 package tango_auth
 
 import (
-	"github.com/k23dev/tango/pkg/webcore"
+	"github.com/k23dev/tango/pkg/tangoapp"
 	"github.com/labstack/echo/v4"
 )
 
-func UsersRoutes(tapp *webcore.TangoApp, rootPath *echo.Group) {
+func UsersRoutes(tapp *tangoapp.TangoApp, rootPath *echo.Group) {
 	users := rootPath.Group("/users/")
 
 	// use jwt

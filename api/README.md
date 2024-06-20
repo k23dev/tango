@@ -21,15 +21,15 @@ Watch the full documentation in: https://github.com/k23dev/tango_cli
 
 Las rutas se definen en la carpeta routes dentro del archivo setuproutes allí se agregan las funciones. Para poder acceder a las funcionalidades de Fiber o Gorm o la configuración de la app se debe pasar una variable
 
-    tapp *webcore.TangoApp
+    tapp *tangoapp.TangoApp
 
 ### Features
 
-Las "features" son los controladores de las rutas y reciben 2 parámetros: 1) el contexto de Fiber y otra variable de *webcore.TangoApp para poder acceder a la db y configuración.
+Las "features" son los controladores de las rutas y reciben 2 parámetros: 1) el contexto de Fiber y otra variable de *tangoapp.TangoApp para poder acceder a la db y configuración.
 
 ### Models
 
-Los modelos deben recibir también la variable que apunte a *webcore.TangoApp
+Los modelos deben recibir también la variable que apunte a *tangoapp.TangoApp
 
 ## Public
 

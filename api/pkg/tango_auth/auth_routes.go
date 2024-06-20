@@ -1,11 +1,11 @@
 package tango_auth
 
 import (
-	"github.com/k23dev/tango/pkg/webcore"
+	"github.com/k23dev/tango/pkg/tangoapp"
 	"github.com/labstack/echo/v4"
 )
 
-func AuthRoutes(tapp *webcore.TangoApp, rootPath *echo.Group) {
+func AuthRoutes(tapp *tangoapp.TangoApp, rootPath *echo.Group) {
 	users := rootPath.Group("/auth/")
 
 	users.POST("login", func(ctx echo.Context) error {

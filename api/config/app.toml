@@ -1,0 +1,14 @@
+# APP
+name="Tango"
+version="1.6.0"
+server_protocol="http"
+server_host="127.0.0.1"
+server_port=9000
+setup_enabled=true
+not_in_production=true
+public_path="./public"
+public_assets_path="./public/assets"
+open_in_browser=false
+# CORS
+cors_origins="127.0.0.1:5432"
+cors_headers="Origin, Content-Type, Accept"

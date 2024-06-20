@@ -1,46 +1,48 @@
 package main
 
 import (
-	"github.com/k23dev/go4it"
+	"log"
+
 	"github.com/k23dev/tango/app"
-	"github.com/k23dev/tango/pkg/webcore"
-	"github.com/k23dev/tango/pkg/webcore_features"
-	"github.com/labstack/echo/v4"
+	"github.com/k23dev/tango/pkg/tango_helpers"
+	"github.com/k23dev/tango/pkg/tango_log"
+	"github.com/k23dev/tango/pkg/tango_middlewares"
+	"github.com/k23dev/tango/pkg/tango_routes"
+	"github.com/k23dev/tango/pkg/tangoapp"
 )
 
+const configPath = "./config/"
+
+func init() {
+	tango_log.Print("Starting up")
+}
+
 func main() {
-
-	app_config := go4it.NewApp("./config/appconfig")
-
-	tapp := webcore.TangoApp{
-		App:    &app_config,
-		Server: echo.New(),
+	tapp := tangoapp.NewTangoApp(configPath)
+	err := tapp.DB.Connect("local")
+	if err != nil {
+		log.Fatal(err)
 	}
-
-	// Database connections
-	app_config.Connect2Db("local")
-	app_config.DB.SetPrimaryDB(0)
-
-	// add the default conection to the auth package
-	app_config.DB.SetAuthDB(0)
 
 	tapp.PrintAppInfo()
 
 	// Middleware
-	webcore.MiddlewareSetup(&tapp)
+	tango_middlewares.Setup(tapp)
 
-	//  Routes
-
-	if tapp.App.Config.App_setup_enabled && tapp.App.Config.App_debug_mode {
-		webcore_features.SetupRoutes(&tapp)
+	//  Tango Routes
+	if tapp.Config.SetupEnabled && tapp.Config.NotInProduction {
+		tango_routes.SetupRoutes(tapp)
 	}
 
-	webcore.SetupStaticRoutes(tapp.Server)
+	tango_routes.SetupStaticRoutes(tapp)
 
-	app.AppSetup(&tapp)
+	// App routes
+	app.AppSetup(tapp)
 
 	// open app in default browser
-	interact.OpenInBrowser("http://" + tapp.GetAppUrl())
+	if tapp.Config.OpenInBrowser {
+		tango_helpers.OpenInBrowser("http://" + tapp.GetAppUrl())
+	}
 
 	// Start server
 	tapp.Server.Logger.Fatal(tapp.Server.Start(":" + tapp.GetPortAsStr()))

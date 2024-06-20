@@ -1,4 +1,4 @@
-package webcore_features
+package tango_routes
 
 import (
 	"net/http"

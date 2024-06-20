@@ -7,28 +7,28 @@ import (
 	"github.com/google/uuid"
 	"github.com/k23dev/tango/pkg/tango_errors"
 	"github.com/k23dev/tango/pkg/tango_validator"
-	"github.com/k23dev/tango/pkg/webcore"
+	"github.com/k23dev/tango/pkg/tangoapp"
 	"github.com/labstack/echo/v4"
 )
 
 const usersPagination = false
 const usersPaginationItemsPerPage = 15
 
-func FindOneUser(ctx echo.Context, tapp *webcore.TangoApp) error {
+func FindOneUser(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	id, err := uuid.Parse(ctx.Param("id"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)
 	}
 
 	u := NewUser()
-	user, err := u.FindOneByUID(tapp.App.DB.Auth, id)
+	user, err := u.FindOneByUID(tapp.DBAuth, id)
 	if err != nil {
 		return ctx.JSON(http.StatusNotFound, err)
 	}
 	return ctx.JSON(http.StatusOK, user.ConvertToDTO())
 }
 
-func FindAllUsers(ctx echo.Context, tapp *webcore.TangoApp) error {
+func FindAllUsers(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	var uBuf *[]User
 	u := NewUser()
 
@@ -43,22 +43,22 @@ func FindAllUsers(ctx echo.Context, tapp *webcore.TangoApp) error {
 		// counter, _ := c.Count(tapp.App.DB.Auth)
 		// pagination := pagination.NewPagination(currentPage,categoriesPaginationItemsPerPage,counter)
 
-		uBuf, _ = u.FindAllPagination(tapp.App.DB.Auth, usersPaginationItemsPerPage, currentPage)
+		uBuf, _ = u.FindAllPagination(tapp.DBAuth, usersPaginationItemsPerPage, currentPage)
 	} else {
-		uBuf, _ = u.FindAll(tapp.App.DB.Auth)
+		uBuf, _ = u.FindAll(tapp.DBAuth)
 	}
 
 	return ctx.JSON(http.StatusOK, uBuf)
 
 }
 
-func ActivateUser(ctx echo.Context, tapp *webcore.TangoApp) error {
+func ActivateUser(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	// TODO
 	code := ctx.Param("code")
 	return ctx.String(http.StatusOK, code)
 }
 
-func CreateUser(ctx echo.Context, tapp *webcore.TangoApp) error {
+func CreateUser(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	// get the incoming values
 	uDTO := UserDTOCreate{}
 	if err := ctx.Bind(&uDTO); err != nil {
@@ -68,8 +68,8 @@ func CreateUser(ctx echo.Context, tapp *webcore.TangoApp) error {
 	u := NewUser()
 	// checkquear the email is not used by other user
 	email, _ := tango_validator.ValidateEmail(uDTO.Email)
-	if u.IsEmailAvailable(tapp.App.DB.Auth, email) {
-		uBuf, err := u.Create(tapp.App.DB.Auth, uDTO)
+	if u.IsEmailAvailable(tapp.DBAuth, email) {
+		uBuf, err := u.Create(tapp.DBAuth, uDTO)
 
 		if err != nil {
 			return ctx.JSON(http.StatusBadRequest, err)
@@ -81,7 +81,7 @@ func CreateUser(ctx echo.Context, tapp *webcore.TangoApp) error {
 	}
 }
 
-func UpdateUser(ctx echo.Context, tapp *webcore.TangoApp) error {
+func UpdateUser(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	id, err := uuid.Parse(ctx.Param("id"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)
@@ -94,7 +94,7 @@ func UpdateUser(ctx echo.Context, tapp *webcore.TangoApp) error {
 	}
 
 	u := NewUser()
-	uBuf, err := u.Update(tapp.App.DB.Auth, id, uDTO)
+	uBuf, err := u.Update(tapp.DBAuth, id, uDTO)
 
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)
@@ -103,13 +103,13 @@ func UpdateUser(ctx echo.Context, tapp *webcore.TangoApp) error {
 	return ctx.JSON(http.StatusOK, uBuf.ConvertToDTO())
 }
 
-func ChangePasswordUser(ctx echo.Context, tapp *webcore.TangoApp) error {
+func ChangePasswordUser(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	updateDTO := &AuthDTOChangePassword{}
 	ctx.Bind(updateDTO)
 
 	auth := NewAuth()
 
-	changed, err := auth.UpdatePassword(tapp.App.DB.Auth, updateDTO)
+	changed, err := auth.UpdatePassword(tapp.DBAuth, updateDTO)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)
 	}
@@ -121,14 +121,14 @@ func ChangePasswordUser(ctx echo.Context, tapp *webcore.TangoApp) error {
 
 }
 
-func DeleteUser(ctx echo.Context, tapp *webcore.TangoApp) error {
+func DeleteUser(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	id, err := uuid.Parse(ctx.Param("id"))
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)
 	}
 
 	u := NewUser()
-	uBuf, err := u.Delete(tapp.App.DB.Auth, id)
+	uBuf, err := u.Delete(tapp.DBAuth, id)
 
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)

@@ -2,11 +2,11 @@ package routes
 
 import (
 	"github.com/k23dev/tango/app/features"
-	"github.com/k23dev/tango/pkg/webcore"
+	"github.com/k23dev/tango/pkg/tangoapp"
 	"github.com/labstack/echo/v4"
 )
 
-func categoriesRoutes(tapp *webcore.TangoApp, rootPath *echo.Group) {
+func categoriesRoutes(tapp *tangoapp.TangoApp, rootPath *echo.Group) {
 	categories := rootPath.Group("/categories/")
 
 	categories.GET(":id", func(ctx echo.Context) error {

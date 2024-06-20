@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/k23dev/tango/app/models"
-	"github.com/k23dev/tango/pkg/webcore"
+	"github.com/k23dev/tango/pkg/tangoapp"
 	"github.com/labstack/echo/v4"
 )
 
@@ -13,18 +13,18 @@ const categoriesPagination = false
 
 const categoriesPaginationItemsPerPage = 15
 
-func FindOneCategory(ctx echo.Context, tapp *webcore.TangoApp) error {
+func FindOneCategory(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	id, _ := strconv.Atoi(ctx.Param("id"))
 
 	c := models.NewCategory()
-	category, err := c.FindOne(tapp.App.DB.Primary, id)
+	category, err := c.FindOne(tapp.DB.Primary, id)
 	if err != nil {
 		return ctx.JSON(http.StatusNotFound, err)
 	}
 	return ctx.JSON(http.StatusOK, category.ConvertToDTO())
 }
 
-func FindAllCategories(ctx echo.Context, tapp *webcore.TangoApp) error {
+func FindAllCategories(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	var cBuf *[]models.Category
 	c := models.NewCategory()
 
@@ -39,16 +39,16 @@ func FindAllCategories(ctx echo.Context, tapp *webcore.TangoApp) error {
 		// counter, _ := c.Count(tapp.App.DB.Primary)
 		// pagination := pagination.NewPagination(currentPage,categoriesPaginationItemsPerPage,counter)
 
-		cBuf, _ = c.FindAllPagination(tapp.App.DB.Primary, categoriesPaginationItemsPerPage, currentPage)
+		cBuf, _ = c.FindAllPagination(tapp.DB.Primary, categoriesPaginationItemsPerPage, currentPage)
 	} else {
-		cBuf, _ = c.FindAll(tapp.App.DB.Primary)
+		cBuf, _ = c.FindAll(tapp.DB.Primary)
 	}
 
 	return ctx.JSON(http.StatusOK, cBuf)
 
 }
 
-func CreateCategory(ctx echo.Context, tapp *webcore.TangoApp) error {
+func CreateCategory(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	// get the incoming values
 	cDTO := models.CategoryDTO{}
 	if err := ctx.Bind(&cDTO); err != nil {
@@ -56,7 +56,7 @@ func CreateCategory(ctx echo.Context, tapp *webcore.TangoApp) error {
 	}
 
 	c := models.NewCategory()
-	cBuf, err := c.Create(tapp.App.DB.Primary, cDTO)
+	cBuf, err := c.Create(tapp.DB.Primary, cDTO)
 
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)
@@ -65,7 +65,7 @@ func CreateCategory(ctx echo.Context, tapp *webcore.TangoApp) error {
 	return ctx.JSON(http.StatusCreated, cBuf.ConvertToDTO())
 }
 
-func UpdateCategory(ctx echo.Context, tapp *webcore.TangoApp) error {
+func UpdateCategory(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	id, _ := strconv.Atoi(ctx.Param("id"))
 
 	// get the incoming values
@@ -75,7 +75,7 @@ func UpdateCategory(ctx echo.Context, tapp *webcore.TangoApp) error {
 	}
 
 	c := models.NewCategory()
-	cBuf, err := c.Update(tapp.App.DB.Primary, id, cDTO)
+	cBuf, err := c.Update(tapp.DB.Primary, id, cDTO)
 
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)
@@ -84,10 +84,10 @@ func UpdateCategory(ctx echo.Context, tapp *webcore.TangoApp) error {
 	return ctx.JSON(http.StatusOK, cBuf.ConvertToDTO())
 }
 
-func DeleteCategory(ctx echo.Context, tapp *webcore.TangoApp) error {
+func DeleteCategory(ctx echo.Context, tapp *tangoapp.TangoApp) error {
 	id, _ := strconv.Atoi(ctx.Param("id"))
 	c := models.NewCategory()
-	cBuf, err := c.Delete(tapp.App.DB.Primary, id)
+	cBuf, err := c.Delete(tapp.DB.Primary, id)
 
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)

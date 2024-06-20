@@ -1,10 +1,11 @@
-package webcore
+package tango_middlewares
 
 import (
+	"github.com/k23dev/tango/pkg/tangoapp"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func MiddlewareSetup(tapp *TangoApp) {
+func Setup(tapp *tangoapp.TangoApp) {
 
 	// CORS
 	tapp.Server.Use(middleware.CORS())
