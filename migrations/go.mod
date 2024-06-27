@@ -1,4 +1,4 @@
-module k23dev/migrations
+module tango_migrations
 
 go 1.22.4
 

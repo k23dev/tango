@@ -4,8 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/k23dev/tango/app/models"
-	"github.com/k23dev/tango/pkg/tango_helpers"
+	"tango_pkg/tango_helpers"
+
+	"tango_api/app/models"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )

@@ -1,8 +1,9 @@
 package migrations
 
 import (
-	"github.com/k23dev/tango/app/models"
-	"github.com/k23dev/tango/pkg/tangoapp"
+	"tango_pkg/tangoapp"
+
+	"tango_api/app/models"
 )
 
 func Migrate() {
