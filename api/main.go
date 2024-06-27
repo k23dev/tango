@@ -2,23 +2,31 @@ package main
 
 import (
 	"log"
+	"strings"
+	"tango_cli/pkg/cmdrunner"
 
-	"github.com/k23dev/tango/app"
-	"github.com/k23dev/tango/pkg/tango_helpers"
-	"github.com/k23dev/tango/pkg/tango_log"
-	"github.com/k23dev/tango/pkg/tango_middlewares"
-	"github.com/k23dev/tango/pkg/tango_routes"
-	"github.com/k23dev/tango/pkg/tangoapp"
+	"tango_pkg/tango_helpers"
+	"tango_pkg/tango_log"
+	"tango_pkg/tango_middlewares"
+	"tango_pkg/tango_routes"
+	"tango_pkg/tangoapp"
+
+	app "tango_api/app"
 )
 
-const configPath = "./config/"
+var rootPath string
 
 func init() {
+	cmdRuner := cmdrunner.New()
+	rootPath = cmdRuner.GetRootPath()
+	if !strings.Contains(rootPath+"/api", "/api/api") {
+		rootPath += "/api"
+	}
 	tango_log.Print("Starting up")
 }
 
 func main() {
-	tapp := tangoapp.NewTangoApp(configPath)
+	tapp := tangoapp.NewTangoApp(rootPath)
 	err := tapp.DB.Connect("local")
 	if err != nil {
 		log.Fatal(err)

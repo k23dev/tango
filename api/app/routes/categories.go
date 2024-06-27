@@ -1,8 +1,10 @@
 package routes
 
 import (
-	"github.com/k23dev/tango/app/features"
-	"github.com/k23dev/tango/pkg/tangoapp"
+	"tango_pkg/tangoapp"
+
+	"tango_api/app/features"
+
 	"github.com/labstack/echo/v4"
 )
 

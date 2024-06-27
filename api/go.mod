@@ -1,4 +1,4 @@
-module github.com/k23dev/tango
+module tango_api
 
 go 1.22.4
 

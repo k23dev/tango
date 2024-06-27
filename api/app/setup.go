@@ -1,8 +1,9 @@
 package app
 
 import (
-	"github.com/k23dev/tango/app/routes"
-	"github.com/k23dev/tango/pkg/tangoapp"
+	"tango_pkg/tangoapp"
+
+	"tango_api/app/routes"
 )
 
 func AppSetup(tapp *tangoapp.TangoApp) {
